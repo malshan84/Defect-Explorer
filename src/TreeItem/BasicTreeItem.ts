@@ -47,7 +47,12 @@ export class DefectItem extends BasicTreeItem {
   ) {
     super(defect.message, vscode.TreeItemCollapsibleState.None);
     const uri: vscode.Uri = vscode.Uri.file(defect.path);
-    this.command = { command: 'defectExplorer.openFile', title: "Open File", arguments: [uri], };
+    const defectResource: DefectResource = {
+      uri: uri,
+      column: defect.startColumn,
+      line: defect.startLine -1
+    };
+    this.command = { command: 'defectExplorer.openFile', title: "Open File", arguments: [defectResource], };
     this.contextValue = 'file';
     this.description = `${this.defect.path} (${this.defect.startLine})`;
     this.tooltip = `${this.defect.rule}-${this.defect.message}`;
@@ -71,4 +76,10 @@ export class DefectItem extends BasicTreeItem {
       'dependency.svg'
     ),
   };
+}
+
+export interface DefectResource {
+  uri: vscode.Uri;
+  column: number;
+  line: number;
 }

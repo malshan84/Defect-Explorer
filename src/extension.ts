@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
   // );
 
   new FileExplorer(context);
-  new DefectExplorer(context);
+  new DefectExplorer();
 
 
   // context.subscriptions.push(disposable1);

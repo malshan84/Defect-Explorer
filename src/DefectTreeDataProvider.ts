@@ -2,8 +2,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
 import { Defect, Defects } from './defects';
-import { DefectItem, GroupByRuleItem, BasicTreeItem } from './TreeItem/BasicTreeItem';
-import { FileSystemProvider } from './FileTree';
+import { DefectItem, GroupByRuleItem, BasicTreeItem, DefectResource } from './TreeItem/BasicTreeItem';
 
 
 export class StaticDefectsProvider
@@ -102,7 +101,7 @@ export class StaticDefectsProvider
 }
 
 export class DefectExplorer {
-  constructor(context: vscode.ExtensionContext) {
+  constructor() {
     const staticDefectTreeViewProvider: StaticDefectsProvider = new StaticDefectsProvider();
     vscode.window.registerTreeDataProvider(
     'defectExplorer', staticDefectTreeViewProvider
@@ -110,8 +109,12 @@ export class DefectExplorer {
     vscode.commands.registerCommand('defectExplorer.openFile', (resource) => this.openResource(resource));
 	}
 
-	private openResource(resource: vscode.Uri): void {
-		vscode.window.showTextDocument(resource);
+	private openResource(resource: DefectResource): void {
+    const options: vscode.TextDocumentShowOptions = {
+      viewColumn: resource.column,
+      selection: new vscode.Range(resource.line, 0, resource.line, 0)
+    };
+		vscode.window.showTextDocument(resource.uri, options);
 	}
 }
 

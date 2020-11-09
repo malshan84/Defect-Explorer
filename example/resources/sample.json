@@ -1,0 +1,313 @@
+{
+    "numberOfDefects": 255,
+    "defects": [
+      {
+        "id": 1145708,
+        "rule": "MISRA_C_2012_09_01",
+        "ruleSet": "MISRA_C_2012",
+        "labels": [],
+        "message": "변수 q는 값이 할당되지 않고 사용됨 ",
+        "startLine": 42,
+        "endLine": 42,
+        "startColumn": -1,
+        "endColumn": -1,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/R_22_02.C",
+        "sourceFileBodyHash": "288e297dbed7f4dbd2c516f209191812",
+        "function": null,
+        "functionSignature": null,
+        "severity": {
+          "description": "Critical:Must",
+          "kind": 0
+        },
+        "confidence": {
+          "description": "None",
+          "kind": 5
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 35,
+        "newlyFound": false,
+        "suppressionHash": "1238145236930528787711748066104976299959"
+      },
+      {
+        "id": 1145707,
+        "rule": "MISRA_C_2012_21_03",
+        "ruleSet": "MISRA_C_2012",
+        "labels": [],
+        "message": "malloc는 사용이 금지된 함수임 ",
+        "startLine": 35,
+        "endLine": 35,
+        "startColumn": -1,
+        "endColumn": -1,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/R_22_02.C",
+        "sourceFileBodyHash": "288e297dbed7f4dbd2c516f209191812",
+        "function": "g",
+        "functionSignature": "g()",
+        "severity": {
+          "description": "Major:Strongly recommended (Required)",
+          "kind": 1
+        },
+        "confidence": {
+          "description": "None",
+          "kind": 5
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 137,
+        "newlyFound": false,
+        "suppressionHash": "68807907968312731076218511028465093379"
+      },
+      {
+        "id": 1147775,
+        "rule": "RTE_Uninitialized_Variable",
+        "ruleSet": "MISSION_CRITICAL_ERRORS",
+        "labels": [
+          {
+            "id": 37,
+            "name": "CWE-457",
+            "url": "https://cwe.mitre.org/data/definitions/457.html"
+          },
+          {
+            "id": 79,
+            "name": "CWE-911",
+            "url": "https://cwe.mitre.org/data/definitions/911.html"
+          }
+        ],
+        "message": "\"`q'\" 변수가 초기화되지 않고 사용될 수 있음",
+        "startLine": 42,
+        "endLine": 42,
+        "startColumn": 18,
+        "endColumn": 19,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/R_22_02.C",
+        "sourceFileBodyHash": "288e297dbed7f4dbd2c516f209191812",
+        "function": "g",
+        "functionSignature": "g()",
+        "severity": {
+          "description": "Major:Strongly recommended (Required)",
+          "kind": 1
+        },
+        "confidence": {
+          "description": "Nearly sure of being the actual error",
+          "kind": 0
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 8003,
+        "newlyFound": true,
+        "suppressionHash": "4248735466"
+      },
+      {
+        "id": 1147776,
+        "rule": "RTE_Use_After_Free",
+        "ruleSet": "MISSION_CRITICAL_ERRORS",
+        "labels": [
+          {
+            "id": 36,
+            "name": "CWE-416",
+            "url": "https://cwe.mitre.org/data/definitions/416.html"
+          }
+        ],
+        "message": "해제한 메모리 오브젝트를 사용함",
+        "startLine": 48,
+        "endLine": 48,
+        "startColumn": 18,
+        "endColumn": 36,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/R_22_02.C",
+        "sourceFileBodyHash": "288e297dbed7f4dbd2c516f209191812",
+        "function": "g",
+        "functionSignature": "g()",
+        "severity": {
+          "description": "Critical:Must",
+          "kind": 0
+        },
+        "confidence": {
+          "description": "Nearly sure of being the actual error",
+          "kind": 0
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 8000,
+        "newlyFound": true,
+        "suppressionHash": "2455322671"
+      },
+      {
+        "id": 1145463,
+        "rule": "MISRA_C_2012_08_06",
+        "ruleSet": "MISRA_C_2012",
+        "labels": [],
+        "message": "external linkage를 가지는 함수 R_5_7 의 정의가 존재하지 않음 ",
+        "startLine": 137,
+        "endLine": 137,
+        "startColumn": -1,
+        "endColumn": -1,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/MC3_HEADER.H",
+        "sourceFileBodyHash": "18aa82df0e9d17138bc44ca83086234b",
+        "function": null,
+        "functionSignature": null,
+        "severity": {
+          "description": "Major:Strongly recommended (Required)",
+          "kind": 1
+        },
+        "confidence": {
+          "description": "None",
+          "kind": 5
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 149,
+        "newlyFound": false,
+        "suppressionHash": "173257617060117910243691976746866830513"
+      },
+      {
+        "id": 1145692,
+        "rule": "MISRA_C_2012_08_06",
+        "ruleSet": "MISRA_C_2012",
+        "labels": [],
+        "message": "external linkage를 가지는 함수 get_int64 의 정의가 존재하지 않음 ",
+        "startLine": 25,
+        "endLine": 25,
+        "startColumn": -1,
+        "endColumn": -1,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/MC3_HEADER.H",
+        "sourceFileBodyHash": "18aa82df0e9d17138bc44ca83086234b",
+        "function": null,
+        "functionSignature": null,
+        "severity": {
+          "description": "Major:Strongly recommended (Required)",
+          "kind": 1
+        },
+        "confidence": {
+          "description": "None",
+          "kind": 5
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 149,
+        "newlyFound": false,
+        "suppressionHash": "8349834344496384053962262678214198586"
+      },
+      {
+        "id": 1145693,
+        "rule": "MISRA_C_2012_08_06",
+        "ruleSet": "MISRA_C_2012",
+        "labels": [],
+        "message": "external linkage를 가지는 함수 R_20_6 의 정의가 존재하지 않음 ",
+        "startLine": 267,
+        "endLine": 267,
+        "startColumn": -1,
+        "endColumn": -1,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/MC3_HEADER.H",
+        "sourceFileBodyHash": "18aa82df0e9d17138bc44ca83086234b",
+        "function": null,
+        "functionSignature": null,
+        "severity": {
+          "description": "Major:Strongly recommended (Required)",
+          "kind": 1
+        },
+        "confidence": {
+          "description": "None",
+          "kind": 5
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 149,
+        "newlyFound": false,
+        "suppressionHash": "11803308846605252585074214524038153460"
+      },
+      {
+        "id": 1145694,
+        "rule": "MISRA_C_2012_08_06",
+        "ruleSet": "MISRA_C_2012",
+        "labels": [],
+        "message": "external linkage를 가지는 함수 R_16_1 의 정의가 존재하지 않음 ",
+        "startLine": 192,
+        "endLine": 192,
+        "startColumn": -1,
+        "endColumn": -1,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/MC3_HEADER.H",
+        "sourceFileBodyHash": "18aa82df0e9d17138bc44ca83086234b",
+        "function": null,
+        "functionSignature": null,
+        "severity": {
+          "description": "Major:Strongly recommended (Required)",
+          "kind": 1
+        },
+        "confidence": {
+          "description": "None",
+          "kind": 5
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 149,
+        "newlyFound": false,
+        "suppressionHash": "98631334310502505213878422685871365018"
+      },
+      {
+        "id": 1145695,
+        "rule": "MISRA_C_2012_08_06",
+        "ruleSet": "MISRA_C_2012",
+        "labels": [],
+        "message": "external linkage를 가지는 함수 get_int64_ptr 의 정의가 존재하지 않음 ",
+        "startLine": 39,
+        "endLine": 39,
+        "startColumn": -1,
+        "endColumn": -1,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/MC3_HEADER.H",
+        "sourceFileBodyHash": "18aa82df0e9d17138bc44ca83086234b",
+        "function": null,
+        "functionSignature": null,
+        "severity": {
+          "description": "Major:Strongly recommended (Required)",
+          "kind": 1
+        },
+        "confidence": {
+          "description": "None",
+          "kind": 5
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 149,
+        "newlyFound": false,
+        "suppressionHash": "6050988987436694661854690393434511706"
+      },
+      {
+        "id": 1145696,
+        "rule": "MISRA_C_2012_08_06",
+        "ruleSet": "MISRA_C_2012",
+        "labels": [],
+        "message": "external linkage를 가지는 함수 R_21_12 의 정의가 존재하지 않음 ",
+        "startLine": 260,
+        "endLine": 260,
+        "startColumn": -1,
+        "endColumn": -1,
+        "path": "D:/고객사 샘플코드/사내 샘플 코드/MISRA_C_2012_EXAMPLARTESTSUITE/MC3_HEADER.H",
+        "sourceFileBodyHash": "18aa82df0e9d17138bc44ca83086234b",
+        "function": null,
+        "functionSignature": null,
+        "severity": {
+          "description": "Major:Strongly recommended (Required)",
+          "kind": 1
+        },
+        "confidence": {
+          "description": "None",
+          "kind": 5
+        },
+        "status": "Open",
+        "assignee": "",
+        "assigneeInfo": null,
+        "templateNumber": 149,
+        "newlyFound": false,
+        "suppressionHash": "54448472557663341766367045889115877429"
+      }
+    ]
+  }
+  

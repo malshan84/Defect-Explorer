@@ -9,5 +9,10 @@
     // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
     "typescript.tsc.autoDetect": "off",
     "typescript.tsdk": "/Users/malshan/PROJECT/STATIC/VSCExtension/codescroll-static/node_modules/typescript/lib",
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "files.associations": {
+        "*.sconf": "json",
+        "*.scheme": "sql",
+        "PCRE_COMPILE.C": "cpp"
+    }
 }

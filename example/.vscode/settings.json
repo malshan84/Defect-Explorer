@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "*.sconf": "json",
-        "*.scheme": "sql",
-        "R_22_02.C": "cpp"
-    }
-}

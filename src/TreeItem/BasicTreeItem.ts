@@ -23,21 +23,21 @@ export class BasicTreeItem extends vscode.TreeItem {
   setDescription(desc:string) {
     this.description = desc;
   }
-
-
 }
 
 export class GroupByRuleItem extends BasicTreeItem {
+  size: number = 0;
   constructor(
     private ruleName: string
   ) {
-    super(ruleName, vscode.TreeItemCollapsibleState.Expanded);
-    let size = this.children === undefined ? 0 : this.children.length;
-    this.description = `(${size + 1})`;
+    super(ruleName, vscode.TreeItemCollapsibleState.Collapsed);
+    this.description = `(${this.size})`;
   }
 
   pushDefect(defect: BasicTreeItem) {
     this.addChildren(defect);
+    this.size++;
+    this.description = `(${this.size})`;
   }
 }
 

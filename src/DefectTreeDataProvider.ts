@@ -111,10 +111,30 @@ export class DefectExplorer {
 
 	private openResource(resource: DefectResource): void {
     const options: vscode.TextDocumentShowOptions = {
-      viewColumn: resource.column,
-      selection: new vscode.Range(resource.line, 0, resource.line, 0)
+      selection: new vscode.Range(resource.line, 0, resource.line, 0),
+      preview: false
     };
-		vscode.window.showTextDocument(resource.uri, options);
+
+    const textEditor = vscode.window.showTextDocument(resource.uri, options);
+
+    const smallNumberDecorationType = vscode.window.createTextEditorDecorationType({
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      overviewRulerColor: 'blue',
+      overviewRulerLane: vscode.OverviewRulerLane.Full,
+      light: {
+        // this color will be used in light color themes
+        borderColor: 'darkblue'
+      },
+      dark: {
+        // this color will be used in dark color themes
+        borderColor: 'lightblue'
+      }
+    });
+
+    textEditor.then(e => {
+      e.setDecorations(smallNumberDecorationType, [new vscode.Range(resource.line, 0, resource.line, 100)]);
+    });
 	}
 }
 

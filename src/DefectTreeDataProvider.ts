@@ -3,6 +3,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { Defect, Defects } from './defects';
 import { DefectItem, GroupByRuleItem, BasicTreeItem, DefectResource } from './TreeItem/BasicTreeItem';
+import * as sqlite3 from 'sqlite3';
 
 
 export class StaticDefectsProvider
@@ -22,6 +23,12 @@ export class StaticDefectsProvider
       workspaceRoot,
       'resources',
       'sample.json'
+    );
+
+    let defectsDBPath = path.join(
+      workspaceRoot,
+      'resources',
+      'sample.ci'
     );
 
     if (this.pathExists(defectsJsonPath)) {
@@ -55,9 +62,8 @@ export class StaticDefectsProvider
       return [];
     }
 
-    const defectsJsons: Defects = JSON.parse(
-      fs.readFileSync(defectsJsonPath, 'utf-8')
-    );
+    const defectsJsons: Defects = this.getDefectListFromJson(defectsJsonPath);
+    // const defectsJsons: Defects = this.getDefectListFromDB(defectsJsonPath);
 
     const makeDefectItem = (defect: Defect): DefectItem => {
       return new DefectItem(defect);
@@ -88,6 +94,32 @@ export class StaticDefectsProvider
     );
 
     return arrayOfDefect;
+  }
+
+  private getDefectListFromDB(defectsJsonPath: string) : Defects{
+    let defects: Defects = {
+      numberOfDefects:0,
+      defects:[]
+    };
+
+    let db = new sqlite3.Database(defectsJsonPath);
+
+    db.serialize(()=>{
+      db.each("SELECT * FROM violation", (err, row) =>{
+        let defect: Defect = row;
+        defects.defects.push(defect);
+        defects.numberOfDefects++;
+      });
+    });
+
+    db.close();
+    return defects;
+  }
+
+  private getDefectListFromJson(defectsJsonPath: string): Defects {
+    return JSON.parse(
+      fs.readFileSync(defectsJsonPath, 'utf-8')
+    );
   }
 
   private pathExists(p: string): boolean {

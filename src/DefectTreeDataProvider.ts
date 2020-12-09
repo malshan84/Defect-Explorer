@@ -1,10 +1,9 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Defect, Defects } from './defects';
 import * as sqlite3 from 'sqlite3';
 import { GroupByRuleTreeItem } from './TreeItem/GruopByRuleTreeItem';
-import { DefectTreeItem } from './TreeItem/defectTreeItem';//
+import { MessageUtils } from './utils/messageUtils';
 
 
 export class StaticDefectsProvider
@@ -26,18 +25,15 @@ export class StaticDefectsProvider
     );
   }
 
-  // private _onDidChangeTreeData: vscode.EventEmitter<BasicTreeItem | undefined> = new vscode.EventEmitter<BasicTreeItem | undefined>();
-  // readonly onDidChangeTreeData: vscode.Event<BasicTreeItem | undefined> = this._onDidChangeTreeData.event;
-
-  // refresh(): void {
-  //   this._onDidChangeTreeData.fire(undefined);
-  // }
-
   getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
     return element;
   }
 
   getChildren(element?: GroupByRuleTreeItem): Thenable<vscode.TreeItem[]> {
+    if (!this.pathExists(this.defectResourcePath)) {
+      MessageUtils.warning("not found db file. : '"+this.defectResourcePath+"'");
+      return Promise.resolve([]);
+    }
 
     if(element) {
       return element.getChildren(this.defectResourcePath);
@@ -51,81 +47,13 @@ export class StaticDefectsProvider
             groupByRuleItems.push(new GroupByRuleTreeItem(row.ruleName, row.c));
           },(err, n) => {
             resolve(groupByRuleItems);
+            reject(err);
           });
           db.close();
         });
       });
     }  
   }
-
-  // private getDefects(defectsJsonPath: string): BasicTreeItem[] {
-  //   if (!this.pathExists(defectsJsonPath)) {
-  //     return [];
-  //   }
-
-  //   const defectsJsons: Defects = this.getDefectListFromJson(defectsJsonPath);
-    // let defectsJsons: Defects = {
-    //   numberOfDefects: 0,
-    //   defects: []
-    // };
-    // defectsJsons = this.getDefectListFromDB(defectsJsonPath);
-
-  //   const makeDefectItem = (defect: Defect): DefectItem => {
-  //     return new DefectItem(defect);
-  //   };
-
-  //   const makeGroupByRuleItem = (defect: Defect): GroupByRuleItem => {
-  //     return new GroupByRuleItem(
-  //       defect.rule
-  //     );
-  //   };
-
-  //   let mapOfDefect = new Map<string, GroupByRuleItem>();
-  //   let arrayOfDefect: BasicTreeItem[] = new Array();
-
-  //   mapOfDefect = defectsJsons.defects.reduce(
-  //     (x: Map<string, GroupByRuleItem>, y: Defect) => {
-  //       if (x.has(y.rule)) {
-  //         x.get(y.rule)?.pushDefect(makeDefectItem(y));
-  //       } else {
-  //         let groupByRuleItem: GroupByRuleItem = makeGroupByRuleItem(y);
-  //         groupByRuleItem.pushDefect(makeDefectItem(y));
-  //         x.set(y.rule, groupByRuleItem);
-  //         arrayOfDefect.push(groupByRuleItem);
-  //       }
-  //       return x;
-  //     },
-  //     mapOfDefect
-  //   );
-
-  //   return arrayOfDefect;
-  // }
-
-  // private getDefectListFromDB(defectsJsonPath: string) : Defects{
-  //   let defects: Defects = {
-  //     numberOfDefects:0,
-  //     defects:[]
-  //   };
-
-  //   let db = new sqlite3.Database(defectsJsonPath);
-
-  //   db.serialize(()=>{
-  //     db.each("SELECT * FROM violation", (err, row) =>{
-  //       let defect: Defect = row;
-  //       defects.defects.push(defect);
-  //       defects.numberOfDefects++;
-  //     });
-  //   });
-
-  //   db.close();
-  //   return defects;
-  // }
-
-  // private getDefectListFromJson(defectsJsonPath: string): Defects {
-  //   return JSON.parse(
-  //     fs.readFileSync(defectsJsonPath, 'utf-8')
-  //   );
-  // }
 
   private pathExists(p: string): boolean {
     try {

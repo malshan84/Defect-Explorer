@@ -1,5 +1,4 @@
 import * as vscode from 'vscode';
-import { Defect } from '../defects';
 import * as path from 'path';
 
 export class DefectTreeItem extends vscode.TreeItem {

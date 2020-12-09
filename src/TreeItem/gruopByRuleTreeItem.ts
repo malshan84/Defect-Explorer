@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { DefectTreeItem } from './defectTreeItem';
 import * as sqlite3 from 'sqlite3';
-import { Defect } from '../defects';
 
 export class GroupByRuleTreeItem extends vscode.TreeItem {
   size: number = 0;

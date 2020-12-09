@@ -41,6 +41,13 @@ export class GroupByRuleItem extends BasicTreeItem {
   }
 }
 
+
+export interface DefectResource {
+  uri: vscode.Uri;
+  column: number;
+  line: number;
+}
+
 export class DefectItem extends BasicTreeItem {
   constructor(
     private defect: Defect,
@@ -76,10 +83,4 @@ export class DefectItem extends BasicTreeItem {
       'dependency.svg'
     ),
   };
-}
-
-export interface DefectResource {
-  uri: vscode.Uri;
-  column: number;
-  line: number;
 }

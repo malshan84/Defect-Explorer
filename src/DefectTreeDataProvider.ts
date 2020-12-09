@@ -1,125 +1,58 @@
 import * as vscode from 'vscode';
 import * as fs from 'fs';
 import * as path from 'path';
-import { Defect, Defects } from './defects';
-import { DefectItem, GroupByRuleItem, BasicTreeItem, DefectResource } from './TreeItem/BasicTreeItem';
 import * as sqlite3 from 'sqlite3';
+import { GroupByRuleTreeItem } from './TreeItem/GruopByRuleTreeItem';
+import { MessageUtils } from './utils/messageUtils';
 
 
 export class StaticDefectsProvider
-  implements vscode.TreeDataProvider<BasicTreeItem> {
+  implements vscode.TreeDataProvider<vscode.TreeItem> {
   
-  groupByDefect: BasicTreeItem[] = new Array;
+  defectResourcePath: string = '';
 
   constructor() { 
     const workspaceRoot = vscode.workspace.rootPath ? vscode.workspace.rootPath : '';
     if (!workspaceRoot) {
       vscode.window.showInformationMessage('No dependency in empty workspace');
-      this.groupByDefect = [];
       return;
     }
 
-    let defectsJsonPath = path.join(
-      workspaceRoot,
-      'resources',
-      'sample.json'
-    );
-
-    let defectsDBPath = path.join(
+    this.defectResourcePath = path.join(
       workspaceRoot,
       'resources',
       'sample.ci'
     );
-
-    if (this.pathExists(defectsJsonPath)) {
-      this.groupByDefect = this.getDefects(defectsJsonPath);
-    } else {
-      vscode.window.showInformationMessage('Workspace has no package.json');
-      this.groupByDefect = [];
-    }
   }
 
-  private _onDidChangeTreeData: vscode.EventEmitter<BasicTreeItem | undefined> = new vscode.EventEmitter<BasicTreeItem | undefined>();
-  readonly onDidChangeTreeData: vscode.Event<BasicTreeItem | undefined> = this._onDidChangeTreeData.event;
-
-  refresh(): void {
-    this._onDidChangeTreeData.fire(undefined);
-  }
-
-  getTreeItem(element: BasicTreeItem): vscode.TreeItem|Thenable<BasicTreeItem> {
+  getTreeItem(element: vscode.TreeItem): vscode.TreeItem {
     return element;
   }
 
-  public getChildren(element?: BasicTreeItem|undefined): vscode.ProviderResult<BasicTreeItem[]> {
-    if (element === undefined) {
-      return this.groupByDefect;
-    }
-    return element.getChildren();
-  }
-
-  private getDefects(defectsJsonPath: string): BasicTreeItem[] {
-    if (!this.pathExists(defectsJsonPath)) {
-      return [];
+  getChildren(element?: GroupByRuleTreeItem): Thenable<vscode.TreeItem[]> {
+    if (!this.pathExists(this.defectResourcePath)) {
+      MessageUtils.warning("not found db file. : '"+this.defectResourcePath+"'");
+      return Promise.resolve([]);
     }
 
-    const defectsJsons: Defects = this.getDefectListFromJson(defectsJsonPath);
-    // const defectsJsons: Defects = this.getDefectListFromDB(defectsJsonPath);
-
-    const makeDefectItem = (defect: Defect): DefectItem => {
-      return new DefectItem(defect);
-    };
-
-    const makeGroupByRuleItem = (defect: Defect): GroupByRuleItem => {
-      return new GroupByRuleItem(
-        defect.rule
-      );
-    };
-
-    let mapOfDefect = new Map<string, GroupByRuleItem>();
-    let arrayOfDefect: BasicTreeItem[] = new Array();
-
-    mapOfDefect = defectsJsons.defects.reduce(
-      (x: Map<string, GroupByRuleItem>, y: Defect) => {
-        if (x.has(y.rule)) {
-          x.get(y.rule)?.pushDefect(makeDefectItem(y));
-        } else {
-          let groupByRuleItem: GroupByRuleItem = makeGroupByRuleItem(y);
-          groupByRuleItem.pushDefect(makeDefectItem(y));
-          x.set(y.rule, groupByRuleItem);
-          arrayOfDefect.push(groupByRuleItem);
-        }
-        return x;
-      },
-      mapOfDefect
-    );
-
-    return arrayOfDefect;
-  }
-
-  private getDefectListFromDB(defectsJsonPath: string) : Defects{
-    let defects: Defects = {
-      numberOfDefects:0,
-      defects:[]
-    };
-
-    let db = new sqlite3.Database(defectsJsonPath);
-
-    db.serialize(()=>{
-      db.each("SELECT * FROM violation", (err, row) =>{
-        let defect: Defect = row;
-        defects.defects.push(defect);
-        defects.numberOfDefects++;
+    if(element) {
+      return element.getChildren(this.defectResourcePath);
+    } else {
+      return new Promise((resolve, reject) =>{      
+        let groupByRuleItems: GroupByRuleTreeItem[] = [];
+        let db = new sqlite3.Database(this.defectResourcePath);
+  
+        db.serialize(()=>{
+          db.each("SELECT  ruleName, count(ruleName) as c FROM violation GROUP BY ruleName", (err, row) =>{
+            groupByRuleItems.push(new GroupByRuleTreeItem(row.ruleName, row.c));
+          },(err, n) => {
+            resolve(groupByRuleItems);
+            reject(err);
+          });
+          db.close();
+        });
       });
-    });
-
-    db.close();
-    return defects;
-  }
-
-  private getDefectListFromJson(defectsJsonPath: string): Defects {
-    return JSON.parse(
-      fs.readFileSync(defectsJsonPath, 'utf-8')
-    );
+    }  
   }
 
   private pathExists(p: string): boolean {
@@ -130,6 +63,12 @@ export class StaticDefectsProvider
     }
     return true;
   }
+}
+
+interface DefectResource {
+  uri: vscode.Uri;
+  column: number;
+  line: number;
 }
 
 export class DefectExplorer {

@@ -4,8 +4,10 @@ import * as path from 'path';
 export class DefectTreeItem extends vscode.TreeItem {
     constructor(
       private message: string,
-      private startColumn: number,
       private startLine: number,
+      private startColumn: number,      
+      private endLine: number,
+      private endColumn: number,
       private filePath: string,
       private rule: string
     ) {
@@ -13,8 +15,10 @@ export class DefectTreeItem extends vscode.TreeItem {
       const uri: vscode.Uri = vscode.Uri.file(this.filePath);
       const defectResource: DefectResource = {
         uri: uri,
-        column: this.startColumn,
-        line: this.startLine -1
+        startLine: this.startLine -1,
+        startColumn: this.startColumn ? this.startColumn -1: 0,
+        endLine: this.endLine? this.endLine -1: this.startLine -1,
+        endColumn: this.endColumn? this.endColumn: Number.MAX_SAFE_INTEGER
       };
       this.command = { command: 'defectExplorer.openFile', title: "Open File", arguments: [defectResource], };
       this.contextValue = 'file';
@@ -43,7 +47,9 @@ export class DefectTreeItem extends vscode.TreeItem {
   }
   
   export interface DefectResource {
-    uri: vscode.Uri;
-    column: number;
-    line: number;
+    uri: vscode.Uri;  
+    startLine: number;
+    startColumn: number;
+    endLine: number;
+    endColumn: number;
   }

@@ -4,6 +4,7 @@ import * as path from 'path';
 import * as sqlite3 from 'sqlite3';
 import { GroupByRuleTreeItem } from './TreeItem/GruopByRuleTreeItem';
 import { MessageUtils } from './utils/messageUtils';
+import { DefectResource } from './TreeItem/defectTreeItem';
 
 
 export class StaticDefectsProvider
@@ -65,12 +66,6 @@ export class StaticDefectsProvider
   }
 }
 
-interface DefectResource {
-  uri: vscode.Uri;
-  column: number;
-  line: number;
-}
-
 export class DefectExplorer {
   constructor() {
     const staticDefectTreeViewProvider: StaticDefectsProvider = new StaticDefectsProvider();
@@ -82,29 +77,31 @@ export class DefectExplorer {
 
 	private openResource(resource: DefectResource): void {
     const options: vscode.TextDocumentShowOptions = {
-      selection: new vscode.Range(resource.line, 0, resource.line, 0),
-      preview: false
+      selection: new vscode.Range(resource.startLine, resource.startColumn, resource.endLine, resource.endColumn),
+      preview: true,
+      preserveFocus: false
     };
-
+    
     const textEditor = vscode.window.showTextDocument(resource.uri, options);
-
-    const smallNumberDecorationType = vscode.window.createTextEditorDecorationType({
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      overviewRulerColor: 'blue',
+    const color = "rgba(255, 0, 0, 0.4)";
+    const smallNumberDecorationType = vscode.window.createTextEditorDecorationType({ 
+      // borderWidth: '1px',
+      borderStyle: 'none',
+      backgroundColor: color,
+      overviewRulerColor: color,
       overviewRulerLane: vscode.OverviewRulerLane.Full,
       light: {
         // this color will be used in light color themes
-        borderColor: 'darkblue'
+        borderColor: color
       },
       dark: {
         // this color will be used in dark color themes
-        borderColor: 'lightblue'
+        borderColor: color
       }
     });
 
     textEditor.then(e => {
-      e.setDecorations(smallNumberDecorationType, [new vscode.Range(resource.line, 0, resource.line, 100)]);
+      e.setDecorations(smallNumberDecorationType, [new vscode.Range(resource.startLine, resource.startColumn, resource.endLine, resource.endColumn)]);
     });
 	}
 }

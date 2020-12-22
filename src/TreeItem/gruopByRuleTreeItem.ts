@@ -18,9 +18,9 @@ export class GroupByRuleTreeItem extends vscode.TreeItem {
       let db = new sqlite3.Database(dbpath);
       db.serialize(()=>{
         db.each("SELECT message, scol, line, path, ruleName FROM violation as v, sourcefile as s WHERE v.idSourceFile = s.idSourceFile and v.ruleName = '"+this.ruleName+"'", (err, row) =>{
-          defects.push(new DefectTreeItem(row.message, row.scol, row.line, row.path, row.ruleName));
         },(err,n) =>{
           resolve(defects);
+          reject(err);
         });
         db.close();        
       });

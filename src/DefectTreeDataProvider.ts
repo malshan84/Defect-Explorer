@@ -44,7 +44,7 @@ export class StaticDefectsProvider
         let db = new sqlite3.Database(this.defectResourcePath);
   
         db.serialize(()=>{
-          db.each("SELECT  ruleName, count(ruleName) as c FROM violation GROUP BY ruleName", (err, row) =>{
+          db.each("SELECT  ruleName, count(ruleName) as c FROM (SELECT DISTINCT ruleName, idsourcefile, message, idcitemplate, line, scol, ecol, eline FROM violation) GROUP BY ruleName", (err, row) =>{
             groupByRuleItems.push(new GroupByRuleTreeItem(row.ruleName, row.c));
           },(err, n) => {
             resolve(groupByRuleItems);
